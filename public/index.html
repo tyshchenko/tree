@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Tree menu</title>
+		<meta name="viewport" content="width=device-width" />
+		<link rel="stylesheet" href="/css/style.css" />
+		<style>
+		html, body { background:#ebebeb; font-size:10px; font-family:Verdana; margin:0; padding:0; }
+		#container { min-width:320px; margin:0px auto 0 auto; background:white; border-radius:0px; padding:0px; overflow:hidden; }
+		#tree { float:left; min-width:319px; border-right:1px solid silver; overflow:auto; padding:0px 0; }
+		#data { margin-left:320px; }
+		#data textarea { margin:0; padding:0; height:100%; width:100%; border:0; background:white; display:block; line-height:18px; }
+		#data, #code { font: normal normal normal 12px/18px 'Consolas', monospace !important; }
+		</style>
+	</head>
+	<body>
+		<div id="container" role="main">
+			<div id="tree"></div>
+			<div id="opisanie" style="overflow: hidden;">
+        <div id="text"  style="margin:25px;">
+          <h1>Тестовое задание:</h1>
+          <p>
+            Построить древовидную структуру n-уровневой вложенности (для примера см. Рис.1). Ветви дерева - Категории, листья – Позиции. Позиции обладают 2-мя атрибутами: Название, Тип. В результате нужно сгруппировать позиции по Типу и вывести в виде дерева, указывая при этом категории позиций (см. Рис.2). При разработке механизма дерева, нужно учитывать, что вложенность дерева может быть очень велика (порядка 5-7 тыс записей) и нужно максимально уменьшить трафик при разворачивании дерева на очень глубокий уровень (использование ajax).
+          </p>
+        </div>
+			</div>
+		</div>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script src="/js/jstree.js"></script>
+		<script>
+		$(function () {
+			$(window).resize(function () {
+				var h = Math.max($(window).height() - 0, 420);
+				$('#container, #data, #tree, #data .content').height(h).filter('.default').css('lineHeight', h + 'px');
+			}).resize();
+
+			$('#tree')
+				.jstree({
+					'core' : {
+						'data' : {
+							'url' : 'get.php?operation=get_node',
+							'data' : function (node) {
+								return { 'id' : node.id };
+							}
+						},
+						'check_callback' : true,
+						'themes' : {
+							'responsive' : false,
+							'variant' : 'small',
+							'stripes' : true
+						}
+					},
+          "types" : {
+                    "root" : {
+                      "icon" : "/img/root_icon.png",
+                    },
+                    "tree" : {
+                      "icon" : "/img/tree_icon.png",
+                    },
+                    "pos" : {
+                      "icon" : "/img/pos_icon.png",
+                    }
+            },
+					'plugins' : ['state','dnd','contextmenu','wholerow', "types"]
+          
+				})
+
+		});
+		</script>
+	</body>
+</html>
